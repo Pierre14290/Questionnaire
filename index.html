@@ -47,6 +47,9 @@
         <option>Autre</option>
       </select>
 
+      <label for="date_choisie">Date souhaitée</label>
+      <input type="date" id="date_choisie" name="date_choisie">
+
       <fieldset>
         <legend>Satisfaction globale *</legend>
         <div class="rating">
@@ -113,6 +116,7 @@
         nom,
         email,
         source: form.source.value || null,
+        date_choisie: form.date_choisie.value || null,
         satisfaction: Number(satisfaction),
         commentaire: form.commentaire.value.trim() || null
       });
