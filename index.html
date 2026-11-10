@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Questionnair</title>
+  <title>Questionnaire</title>
   <style>
     :root { --bg:#f4f6fb; --card:#fff; --text:#1f2430; --muted:#6b7385; --accent:#3b5bdb; --border:#d6dbe7; --ok:#2b8a3e; --err:#c92a2a; }
     * { box-sizing: border-box; }
@@ -28,46 +28,35 @@
 </head>
 <body>
   <main class="card">
-    <h1>Votre avis nous intéresse</h1>
-    <p class="intro">Ce questionnaire prend moins d'une minute. Merci d'avance !</p>
+    <h1>ELECTROPARK statement</h1>
+    <p class="intro">Hour-by-hour statement</p>
 
     <form id="formulaire" novalidate>
-      <label for="nom">Nom *</label>
-      <input type="text" id="nom" name="nom" required maxlength="100" autocomplete="name">
+      <label for="entity">Name *</label>
+      <input type="text" id="entity" name="entity" required maxlength="100" autocomplete="entity" value="Terminal 1">
 
       <label for="email">Adresse e-mail *</label>
-      <input type="email" id="email" name="email" required maxlength="150" autocomplete="email">
+      <input type="email" id="email" name="email" required maxlength="150" autocomplete="email" value="terminal1@electropark.ca">
 
-      <label for="source">Comment avez-vous connu ce questionnaire ?</label>
-      <select id="source" name="source">
-        <option value="">— Choisir —</option>
-        <option>Un ami</option>
-        <option>Réseaux sociaux</option>
-        <option>Moteur de recherche</option>
-        <option>Autre</option>
-      </select>
+      <label for="stat1">Number of parking spaces equipped with a charging station that are currently occupied *</label>
+      <input type="text" id="stat1" name="stat1" required maxlength="100" autocomplete="stat1">
 
-      <label for="date_choisie">Date souhaitée</label>
-      <input type="date" id="date_choisie" name="date_choisie">
+      <label for="stat2">Number of parking spaces not equipped with a charging station that are currently occupied *</label>
+      <input type="text" id="stat2" name="stat2" required maxlength="100" autocomplete="stat2">
 
-      <fieldset>
-        <legend>Satisfaction globale *</legend>
-        <div class="rating">
-          <label><input type="radio" name="satisfaction" value="1" required> 1</label>
-          <label><input type="radio" name="satisfaction" value="2"> 2</label>
-          <label><input type="radio" name="satisfaction" value="3"> 3</label>
-          <label><input type="radio" name="satisfaction" value="4"> 4</label>
-          <label><input type="radio" name="satisfaction" value="5"> 5</label>
-        </div>
-      </fieldset>
+      <label for="stat3">Energy produced on-site (kWh) *</label>
+      <input type="text" id="stat3" name="stat3" required maxlength="100" autocomplete="stat3">
 
-      <label for="commentaire">Commentaire</label>
-      <textarea id="commentaire" name="commentaire" maxlength="2000"></textarea>
+      <label for="stat4">Energy consumed on-site (kWh) *</label>
+      <input type="text" id="stat4" name="stat4" required maxlength="100" autocomplete="stat4">
+
+      <label for="stat5">Maximum power imported from the grid *</label>
+      <input type="text" id="stat5" name="stat5" required maxlength="100" autocomplete="stat5">
 
       <!-- Champ piège anti-robots : doit rester vide -->
       <input type="text" name="site_web" id="site_web" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-      <button type="submit" id="envoyer">Envoyer mes réponses</button>
+      <button type="submit" id="envoyer">Send</button>
       <div id="message" role="status"></div>
     </form>
   </main>
@@ -96,11 +85,10 @@
       // Anti-robots
       if (form.site_web.value !== "") return;
 
-      const nom = form.nom.value.trim();
+      const entity = form.entity.value.trim();
       const email = form.email.value.trim();
-      const satisfaction = form.satisfaction.value;
 
-      if (!nom || !email || !satisfaction) {
+      if (!entity || !email) {
         afficher("Merci de remplir tous les champs obligatoires (*).", "err");
         return;
       }
@@ -113,19 +101,21 @@
       bouton.textContent = "Envoi en cours…";
 
       const { error } = await client.from("reponses").insert({
-        nom,
+        entity,
         email,
         source: form.source.value || null,
-        date_choisie: form.date_choisie.value || null,
-        satisfaction: Number(satisfaction),
-        commentaire: form.commentaire.value.trim() || null
+        stat1: form.stat1.value || null,
+        stat2: form.stat1.value || null,
+        stat3: form.stat1.value || null,
+        stat4: form.stat1.value || null,
+        stat5: form.stat1.value || null,
       });
 
       if (error) {
         console.error(error);
         afficher("Une erreur est survenue. Merci de réessayer.", "err");
         bouton.disabled = false;
-        bouton.textContent = "Envoyer mes réponses";
+        bouton.textContent = "Send";
       } else {
         form.reset();
         form.style.display = "none";
