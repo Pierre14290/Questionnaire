@@ -1,0 +1,2 @@
+const SUPABASE_URL = "https://Pierre14290's Project.supabase.co";
+const SUPABASE_KEY = "sb_publishable_fVnPRQt3WVGELk7jsNRZQg_qslMKMbS";
